@@ -22,8 +22,6 @@ The following UML diagram represents the final class structure of the Battle Are
 
 ┌───────────────────────────────┐ │ BattleController (JavaFX) │ ├───────────────────────────────┤ │ - UI controls (labels, bars, │ │ buttons, text area) │ │ - battleSystem : BattleSystem │ ├───────────────────────────────┤ │ + initialize() │ │ + onStart() │ │ + onAttack() │ │ + onSpecial() │ │ + onHeal() │ │ - updateUI() │ │ - endBattle() │ └───────────────────────────────┘
 
-The following wireframe represents the final GUI layout of the Battle Arena game:
-
 ### OOP Concepts Implemented
 1. **Inheritance**: `Player` and `Monster` extend the abstract `Character` class  
 2. **Polymorphism**: The `attack()` method is overridden in both `Player` and `Monster` classes  
@@ -35,9 +33,6 @@ The following wireframe represents the final GUI layout of the Battle Arena game
 ### Concepts Not Used
 - **Interfaces**: Abstract classes were chosen instead to provide both method signatures and shared implementation  
 - **Custom Generics**: Standard collections are used; `List<Monster>` leverages built-in generics  
-
-## GUI Wireframe Diagram
-*(ASCII diagrams for Start, Battle, and Victory/Defeat screens included — see full README for details)*
 
 ## Features
 - **Turn-based Combat**: Strategic battle system with player and monster turns  
