@@ -1,8 +1,8 @@
 # Battle Arena - Turn-Based Combat Game
 
-## Project Description
+# Project Description
 
-Battle Arena is an interactive turn-based combat game built with JavaFX where players engage in strategic battles against progressively challenging monsters. Players can choose from different combat actions including normal attacks, special attacks, and healing abilities, each with unique strategic implications. The game features a custom exception handling system (`BattleException`) to manage invalid game states and provides real-time visual feedback through health bars and a comprehensive battle log. This project was inspired by classic turn-based RPG games like Final Fantasy and Pokemon, where strategic decision-making and resource management are key to victory. The game demonstrates object-oriented programming principles including inheritance, polymorphism, encapsulation, and exception handling in a fun and engaging way.
+Battle Arena is an interactive turn‑based combat game built with JavaFX where players face progressively stronger monsters using normal attacks, special attacks, and healing abilities, each with unique strategic implications. Inspired by classic RPGs such as Final Fantasy, Pokemon, and Dragon Quest, the project demonstrates core object‑oriented programming principles including inheritance, polymorphism, encapsulation, and custom exception handling through a BattleException system that manages invalid game states. The game provides real‑time visual feedback with health bars and a comprehensive battle log, while the UML diagram and GUI wireframe illustrate the planning and structure behind the implementation. Some features were streamlined to meet the deadline, focusing on the essential mechanics rather than optional extras, ensuring a playable and functional experience. Users interact through a simple JavaFX interface, choosing actions each turn and watching the results unfold in the log, highlighting how strategic decision‑making and resource management drive gameplay.
 
 ## Project Inspiration
 
@@ -22,124 +22,74 @@ The goal was to create a modern JavaFX implementation that captures the essence 
 ## UML Diagram
 
 The following UML diagram represents the final class structure of the Battle Arena game:
+┌───────────────────────────────┐
+│          Exception            │
+│       (Java Standard)         │
+└───────────────┬───────────────┘
+                │ extends
+┌───────────────▼───────────────┐
+│       BattleException          │
+│ + BattleException(String msg)  │
+└───────────────────────────────┘
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                        Exception                            │
-│                    (Java Standard)                          │
-└───────────────────────────┬─────────────────────────────────┘
-                            │
-                            │ extends
-                            │
-                ┌───────────▼───────────┐
-                │   BattleException     │
-                ├───────────────────────┤
-                │ + BattleException(    │
-                │     String message)   │
-                └───────────────────────┘
+┌───────────────────────────────┐
+│          Character             │
+│      (Abstract Class)          │
+├───────────────────────────────┤
+│ - name : String                │
+│ - health : int                 │
+│ - maxHealth : int              │
+│ - attack : int                 │
+│ - defense : int                │
+├───────────────────────────────┤
+│ + Character(...)               │
+│ + attack(Character) : int      │
+│ + takeDamage(int) : int        │
+│ + heal(int) : void             │
+│ + isDefeated() : boolean       │
+│ + getHealthPercentage() : double│
+└───────────────┬───────────────┘
+                │
+   ┌────────────▼─────────────┐       ┌────────────▼─────────────┐
+   │          Player           │       │         Monster          │
+   ├───────────────────────────┤       ├──────────────────────────┤
+   │ + specialAttack(Character)│       │ + attack(Character)      │
+   │ + useHeal()               │       │ + Monster(...)           │
+   └───────────────────────────┘       └──────────────────────────┘
 
-┌─────────────────────────────────────────────────────────────┐
-│                      Character                              │
-│                    (Abstract Class)                         │
-├─────────────────────────────────────────────────────────────┤
-│ # String name                                               │
-│ # int health                                                │
-│ # int maxHealth                                             │
-│ # int attack                                                │
-│ # int defense                                               │
-├─────────────────────────────────────────────────────────────┤
-│ + Character(String, int, int, int)                         │
-│ + abstract int attack(Character) throws BattleException    │
-│ + int takeDamage(int)                                       │
-│ + boolean isDefeated()                                      │
-│ + void heal(int)                                            │
-│ + String getName()                                          │
-│ + int getHealth()                                           │
-│ + int getMaxHealth()                                        │
-│ + int getAttack()                                           │
-│ + int getDefense()                                          │
-│ + double getHealthPercentage()                             │
-└───────────────┬───────────────────────┬─────────────────────┘
-                │                       │
-                │ extends               │ extends
-                │                       │
-    ┌───────────▼──────────┐  ┌────────▼──────────┐
-    │       Player         │  │      Monster       │
-    ├──────────────────────┤  ├───────────────────┤
-    │                      │  │                   │
-    ├──────────────────────┤  ├───────────────────┤
-    │ + Player(String)     │  │ + Monster(String) │
-    │ + Player(String,     │  │ + Monster(String, │
-    │   int, int, int)     │  │   int, int, int)  │
-    │ + int attack(        │  │ + int attack(     │
-    │   Character)         │  │   Character)       │
-    │ + int specialAttack( │  │                   │
-    │   Character)         │  │                   │
-    └──────────────────────┘  └───────────────────┘
+┌───────────────────────────────┐
+│        BattleSystem            │
+├───────────────────────────────┤
+│ - player : Player              │
+│ - monsters : List<Monster>     │
+│ - currentMonster : Monster     │
+│ - round : int                  │
+│ - battleLog : StringBuilder    │
+├───────────────────────────────┤
+│ + playerAttack() : String      │
+│ + playerSpecialAttack() : String│
+│ + playerHeal() : String        │
+│ + monsterTurn() : String       │
+│ + isBattleOver() : boolean     │
+│ + playerWon() : boolean        │
+│ + getBattleLog() : String      │
+└───────────────────────────────┘
 
-┌─────────────────────────────────────────────────────────────┐
-│                    BattleSystem                             │
-├─────────────────────────────────────────────────────────────┤
-│ - Player player                                             │
-│ - List<Monster> monsters                                    │
-│ - Monster currentMonster                                    │
-│ - int currentMonsterIndex                                   │
-│ - int round                                                 │
-│ - String battleLog                                          │
-├─────────────────────────────────────────────────────────────┤
-│ + BattleSystem(Player, List<String>)                       │
-│ + String playerAttack() throws BattleException             │
-│ + String playerSpecialAttack() throws BattleException      │
-│ + String monsterAttack() throws BattleException            │
-│ + String playerHeal() throws BattleException               │
-│ + boolean isBattleOver()                                    │
-│ + boolean playerWon()                                       │
-│ + Player getPlayer()                                        │
-│ + Monster getCurrentMonster()                               │
-│ + int getRound()                                            │
-│ + String getBattleLog()                                     │
-└─────────────────────────────────────────────────────────────┘
-
-┌─────────────────────────────────────────────────────────────┐
-│                  BattleController                           │
-│                  (JavaFX Controller)                        │
-├─────────────────────────────────────────────────────────────┤
-│ - TextField playerNameField                                 │
-│ - Button startButton                                        │
-│ - Label playerNameLabel                                     │
-│ - Label playerHealthLabel                                   │
-│ - ProgressBar playerHealthBar                              │
-│ - Label monsterNameLabel                                    │
-│ - Label monsterHealthLabel                                  │
-│ - ProgressBar monsterHealthBar                             │
-│ - Button attackButton                                       │
-│ - Button specialAttackButton                                │
-│ - Button healButton                                         │
-│ - TextArea battleLogArea                                    │
-│ - Label roundLabel                                          │
-│ - Label statusLabel                                         │
-│ - VBox gameArea                                             │
-│ - VBox startArea                                            │
-│ - BattleSystem battleSystem                                 │
-│ - boolean gameStarted                                       │
-├─────────────────────────────────────────────────────────────┤
-│ + initialize()                                              │
-│ + onStartButtonClick()                                      │
-│ + onAttackButtonClick()                                     │
-│ + onSpecialAttackButtonClick()                              │
-│ + onHealButtonClick()                                       │
-│ - updateDisplay()                                           │
-│ - endBattle()                                               │
-└─────────────────────────────────────────────────────────────┘
-
-┌─────────────────────────────────────────────────────────────┐
-│                 HelloApplication                            │
-│              (JavaFX Application)                           │
-├─────────────────────────────────────────────────────────────┤
-│ + start(Stage)                                              │
-│ + main(String[])                                            │
-└─────────────────────────────────────────────────────────────┘
-```
+┌───────────────────────────────┐
+│     BattleController (JavaFX)  │
+├───────────────────────────────┤
+│ - UI controls (labels, bars,  │
+│   buttons, text area)          │
+│ - battleSystem : BattleSystem  │
+├───────────────────────────────┤
+│ + initialize()                 │
+│ + onStart()                    │
+│ + onAttack()                   │
+│ + onSpecial()                  │
+│ + onHeal()                     │
+│ - updateUI()                   │
+│ - endBattle()                  │
+└───────────────────────────────┘
 
 ### OOP Concepts Implemented
 
@@ -300,5 +250,5 @@ ud3-Adams1234784-main/
 
 ## Author
 
-CS112 Student - UD3 Final Project
+CS112 Adam Szloboda - UD3 Final Project
 
